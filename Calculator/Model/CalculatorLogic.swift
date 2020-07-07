@@ -10,22 +10,28 @@ import Foundation
 
 struct CalculatorLogic {// Changed from class to struct
     
-    var number: Double
+    private var number: Double?
     
-    init(number: Double) {
+    // *** structs do not require inititialisers like classes
+    //    init(number: Double) {
+    //        self.number = number
+    //    }
+    
+    mutating func setNumber(_ number: Double) {// Set external parameter name to nothing and set internal paraname to content of the function
         self.number = number
     }
     
-    
     func calculate(symbol: String) -> Double? {
-        
+        if let n = number {
             if symbol == "+/-" {
-                return number * -1
+                return n * -1
             } else if symbol == "AC" {
                 return 0
             } else if symbol == "%" {
-                return number * 0.01
+                return n * 0.01
             }
+        }
         return nil
     }
+    
 }
