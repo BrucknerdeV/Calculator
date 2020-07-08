@@ -17,19 +17,54 @@ struct CalculatorLogic {// Changed from class to struct
     //        self.number = number
     //    }
     
+    private var intermediateCalculation: (n1: Double, calcMethod: String)?// No values yet
+    
     mutating func setNumber(_ number: Double) {// Set external parameter name to nothing and set internal paraname to content of the function
         self.number = number
     }
     
-    func calculate(symbol: String) -> Double? {
+    mutating func calculate(symbol: String) -> Double? {
         if let n = number {
-            if symbol == "+/-" {
+            switch symbol {
+            case "+/-":
                 return n * -1
-            } else if symbol == "AC" {
+            case "AC":
                 return 0
-            } else if symbol == "%" {
+            case "%":
                 return n * 0.01
+            case "=":
+                return performTwoNumCalculation(n2: n)
+            default:
+                intermediateCalculation = (n1: n, calcMethod: symbol)
             }
+        }
+        return nil
+    }
+    
+    private func performTwoNumCalculation(n2: Double) -> Double? {
+        if let n1 = intermediateCalculation?.n1, let operation = intermediateCalculation?.calcMethod {
+            
+            switch operation {
+            case "+":
+                return n1 + n2
+            case "-":
+                return n1 - n2
+            case "×":
+                return n1 * n2
+            case "÷":
+                return n1 / n2
+            default:
+                fatalError("The operation does not match any of the cases.")
+            }
+            //            if operation == "+" {
+            //                return n1 + n2
+            //            } else if operation == "-" {
+            //                return n1 - n2
+            //            } else if operation == "x" {
+            //                return n1 * n2
+            //            } else {
+            //                return n1 / n2
+            //            }
         }
         return nil
     }
